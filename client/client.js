@@ -1,6 +1,15 @@
 const publicVapidKey = 'BNgIM2bPgDqArtLaOlhmYZtDYmD3TTMzudNwc6tD6Yz9H6PoOcu2Xm8-MHlHcgzMB8D2yNUYcx_c-Hpcq0QKTI8';
 
-
+async function checkIfAlreadySubscribed() {
+    const registration = await navigator.serviceWorker.getRegistration();
+    const subscribed = await registration.pushManager.getSubscription();
+    if(subscribed) {
+        console.info('Already subscribed to push notifications');
+        document.getElementById("subscribeButton").disabled = true;
+        document.getElementById("unsubscribeButton").disabled = false;
+    }
+}
+checkIfAlreadySubscribed()
 
 function subscribe() {
     if('serviceWorker' in navigator) {
@@ -38,5 +47,26 @@ async function send() {
             'content-type': 'application/json'
         }
     })
+    document.getElementById("subscribeButton").disabled = true;
+    document.getElementById("unsubscribeButton").disabled = false;
     console.log('Push Sent');
 }
+
+async function unsubscribe() {
+    const registration = await navigator.serviceWorker.getRegistration();
+    const subscription = await registration.pushManager.getSubscription();
+    fetch('/removeSubscription', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({endpoint: subscription.endpoint})
+    });
+    const unsubscribed = await subscription.unsubscribe();
+    if (unsubscribed) {
+    console.info('Successfully unsubscribed from push notifications.');
+    document.getElementById("subscribeButton").disabled = false;
+    document.getElementById("unsubscribeButton").disabled = true;
+    }
+}
+

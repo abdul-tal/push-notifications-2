@@ -5,21 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Push Notifications</title>
-    <!-- <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-    <script>
-      window.OneSignal = window.OneSignal || [];
-      OneSignal.push(function() {
-        OneSignal.init({
-          appId: "ea40c90c-f3d2-4871-abb8-fe493f20b88a",
-        });
-      });
-    </script> -->
+
 </head>
+<script src="client.js"></script>
 </head>
 <body>
-    <h1>Push Notifications - Server1111</h1>
-    <button onclick="subscribe()">Subscribe</button>
-    <!-- <div class='onesignal-customlink-container'></div> -->
-    <script src="client.js"></script>
+  <h1>Push Notifications - Server1111</h1>
+  <button id="subscribeButton" onclick="subscribe()">Subscribe</button>
+  <button id="unsubscribeButton" onclick="unsubscribe()" disabled>Unsubscribe</button>
+
 </body>
 </html>

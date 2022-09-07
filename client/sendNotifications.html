@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sendNotifications</title>
+</head>
+<body>
+    <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+    <form action="/sendNotifications" method="post" target="dummyframe">
+        <label for="category">Customer:</label><br>
+        <input type="text" id="category" name="category"><br>
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br><br>
+        <input type="submit" value="Submit">
+      </form> 
+</body>
+</html>

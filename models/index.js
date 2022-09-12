@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const databaseConString = 'mysql://sql6517263:SZPCrfd1C1@sql6.freemysqlhosting.net/sql6517263'
+const databaseConString = 'mysql://admin:pushdbpass@push-db-test.cnzbsftqo00c.us-east-1.rds.amazonaws.com/push_test'
 const sequelize = new Sequelize(databaseConString, { pool: { acquire: 2000 }});
 
 const db = {};

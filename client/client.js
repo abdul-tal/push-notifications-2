@@ -14,7 +14,7 @@ async function checkIfAlreadySubscribed() {
     console.info('Checking if already subscribed');
     if('serviceWorker' in navigator) {
         const registration = await navigator.serviceWorker.getRegistration();
-        const subscribed = await registration.pushManager.getSubscription();
+        const subscribed = registration && registration.pushManager && await registration.pushManager.getSubscription();
         if(subscribed) {
             console.info('Already subscribed to push notifications');
             highlightUnsubscribeButton();
@@ -57,7 +57,7 @@ async function send() {
     });
     console.log('Service worker registered');
     //await registration.pushManager.getSubscription();
-    console.log('Registering Push');
+    console.log('Subscribing...');
     let subscription;
     try {
         subscription = await register.pushManager.subscribe({
@@ -67,10 +67,10 @@ async function send() {
     } catch (error) {
         console.log('error in client', error)
     }
-    console.log('Push Registered', subscription);
+    console.log('PushSubscription', subscription);
     console.log('window.location.href', window.location.href);
 
-    console.log('Sending Push');
+    console.log('Sending PushSubscription to backend');
     const url = window.location.href;
     const subdomain = url.split('.')[0].slice(url.indexOf('//')+2);
     await fetch('/subscribe', {
@@ -81,7 +81,7 @@ async function send() {
         }
     })
     highlightUnsubscribeButton();
-    console.log('Push Sent');
+    console.log('PushSubscription Sent to backend');
 }
 
 async function unsubscribe() {

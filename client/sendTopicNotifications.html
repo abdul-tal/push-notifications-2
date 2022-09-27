@@ -8,9 +8,11 @@
 </head>
 <body>
     <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-    <form action="/sendNotifications" method="post" target="dummyframe">
+    <form action="/sendTopicNotifications" method="post" target="dummyframe">
         <label for="customer">Customer:</label><br>
         <input type="text" id="customer" name="customer"><br>
+        <label for="topic">Topic:</label><br>
+        <input type="text" id="topic" name="topic"><br>
         <label for="title">Title:</label><br>
         <input type="text" id="title" name="title"><br><br>
         <input type="submit" value="Submit">

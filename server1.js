@@ -20,23 +20,42 @@ webpush.setVapidDetails('mailto:abdul.rahman@talentica.com', publicVapidKey, pri
 
 app.post('/subscribe', async (req, res) => {
     try {
-        const { subscription, category } = req.body;
-        console.log('subscription.endpoint', subscription.endpoint)
-        const result = await models.subscriptions.findOrCreate({
+        const { subscription, customer, topics } = req.body;
+        console.log('subscription.....from client...', subscription)
+        // console.log('subscription.endpoint', subscription.endpoint)
+        console.log('checkedBoxes....', topics);
+        const subscriptionsResult = await models.subscriptions.findOrCreate({
             where: {
                 endpoint: subscription.endpoint
             },
             defaults: {
                 subscription: JSON.stringify(subscription),
-                category: category,
+                customer,
                 endpoint: subscription.endpoint
             }
         });
-        console.log('Subscribed', JSON.stringify(result, null, 2));
+        console.log('subscriptionsResult', subscriptionsResult[0].dataValues.id)
+        topics.forEach(async topic => {
+            const topicsResult = await models.topics.findOrCreate({
+                where: {
+                    customer,
+                    topic,
+                    subscriptionId: subscriptionsResult[0].dataValues.id
+                },
+                defaults: {
+                    customer,
+                    topic,
+                    subscriptionId: subscriptionsResult[0].dataValues.id
+                }
+            });
+        });
+
+        // console.log('Subscribed', JSON.stringify(result, null, 2));
         res.status(201).json({
             msg: 'subscription added'
         });
     } catch (error) {
+        console.log(error)
         res.send({
             error
         })
@@ -48,18 +67,18 @@ app.post('/subscribe', async (req, res) => {
 app.post('/sendNotifications', async (req, res) => {
     try {
         console.log('\n\n\nreq.body', req.body)
-        const { category, title } = req.body;
+        const { customer, title } = req.body;
     
         const subscriptionData = await models.subscriptions.findAll({
             where: {
-                category
+                customer
             }
         });
     
         subscriptionData.forEach(subscriberObj => {
             const payload = {
                 title,
-                category
+                customer
             };
             const subscription = JSON.parse(subscriberObj.subscription);
     
@@ -76,6 +95,45 @@ app.post('/sendNotifications', async (req, res) => {
     }
 })
 
+app.post('/sendTopicNotifications', async (req, res) => {
+    try {
+        console.log('\n\n\nsendTopicNotifications req.body', req.body)
+        const { customer, title, topic } = req.body;
+    
+        const subscriptionData = await models.subscriptions.findAll({
+            include: {
+                model: models.topics,
+                where: {
+                    customer,
+                    topic
+                }
+            }
+        });
+
+        console.log('\n\n\nsubscriptionData........', subscriptionData)
+    
+        subscriptionData.forEach(subscriberObj => {
+            // console.log('\n\n\nsubscriberObj......', subscriberObj)
+            const payload = {
+                title,
+                customer
+            };
+            const subscription = JSON.parse(subscriberObj.subscription);
+            console.log('subscription..,.,.,', subscription);
+    
+            webpush.sendNotification(subscription, JSON.stringify(payload)).then(result => {
+                console.log("notificantion sent", result)
+              });
+              setTimeout(function(){ console.log("After 5 seconds!"); }, 5000);
+        })
+        res.send({ msg: "notifications sent" });
+    } catch (error) {
+        console.log(error)
+        res.send({
+            error
+        });
+    }
+})
 
 app.post('/removeSubscription', async (req, res) => {
     const { endpoint } = req.body;

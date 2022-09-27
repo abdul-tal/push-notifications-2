@@ -11,8 +11,23 @@
 </head>
 <body>
   <h1>Push Notifications - Server1111</h1>
+  <label><input type="checkbox" id="topic1" value="topic1" class="topics">Topic-1</label><br>
+  <label><input type="checkbox" id="topic2" value="topic2" class="topics">Topic-2</label><br>
+  <label><input type="checkbox" id="topic3" value="topic3" class="topics">Topic-3</label><br>
+  <label><input type="checkbox" id="topic4" value="topic4" class="topics">Topic-4</label><br><br>
   <button id="subscribeButton" onclick="subscribe()">Subscribe</button>
   <button id="unsubscribeButton" onclick="unsubscribe()" disabled>Unsubscribe</button>
 
 </body>
+<script>
+//   //checked boxes
+// let checkedBoxes;
+// const subsBtn = document.querySelector('#subscribeButton');
+// subsBtn.addEventListener('click', () => {
+//     checkedBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
+//     checkedBoxes.map(checkedbox => checkedbox.value)
+//     console.log('checkedBoxes', checkedBoxes);
+//     checkedBoxes.forEach(checkedbox => console.log(checkedbox))
+// });
+</script>
 </html>

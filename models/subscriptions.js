@@ -5,7 +5,7 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true,
             defaultValue: Sequelize.UUIDV4
         },
-        category: {
+        customer: {
             type: Sequelize.STRING
         },
         subscription: {
@@ -15,8 +15,15 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         }
     }, {
-        tableName: 'Subscriptions'
+        tableName: 'Subscriptions',
+        underscored: true
     });
+
+    Subscriptions.associate = (models) => {
+        Subscriptions.hasMany(models.topics, {
+            onDelete: 'cascade'
+        });
+    };
   
     return Subscriptions;
   };

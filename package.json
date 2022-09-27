@@ -17,6 +17,7 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "sequelize": "^6.21.4",
+    "uuid-buffer": "^1.0.3",
     "web-push": "^3.5.0"
   }
 }

@@ -23,6 +23,7 @@ async function checkIfAlreadySubscribed() {
 }
 checkIfAlreadySubscribed()
 
+
 function subscribe() {
     if('serviceWorker' in navigator) {
         checkNotifs().catch(err => console.error(err))
@@ -55,7 +56,7 @@ async function send() {
     const register = await navigator.serviceWorker.register('./worker.js', {
         scope: '/'
     });
-    console.log('Service worker registered');
+    console.log('Service worker registered', register);
     //await registration.pushManager.getSubscription();
     console.log('Subscribing...');
     let subscription;
@@ -65,6 +66,7 @@ async function send() {
             applicationServerKey: publicVapidKey
         })
     } catch (error) {
+        console.log(error)
         console.log('error in client', error)
     }
     console.log('PushSubscription', subscription);
@@ -73,9 +75,21 @@ async function send() {
     console.log('Sending PushSubscription to backend');
     const url = window.location.href;
     const subdomain = url.split('.')[0].slice(url.indexOf('//')+2);
-    await fetch('/subscribe', {
+
+    //checked boxes
+    const t1 = document.getElementById("topic1");
+    const t2 = document.getElementById("topic2");
+    const t3 = document.getElementById("topic3");  
+    const t4 = document.getElementById("topic4"); 
+    const checkedBoxes = [];
+
+    for(const t of [t1, t2, t3, t4]) {
+        t.checked && checkedBoxes.push(t.value);
+    }
+    console.log('checkedBoxes.....', checkedBoxes)
+    const response = await fetch('/subscribe', {
         method: 'POST',
-        body: JSON.stringify({ subscription, category: subdomain }),
+        body: JSON.stringify({ subscription, customer: subdomain, topics: checkedBoxes }),
         headers: {
             'content-type': 'application/json'
         }

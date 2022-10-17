@@ -22,27 +22,3 @@ Object.keys(db).forEach((modelName) => {
 });
 
 module.exports = db;
-
-// const str = 'https://abab.cdcd.com';
-// const subdomain = str.split('.')[0].slice(str.indexOf('//')+2)
-// console.log('subdomain', subdomain)
-
-// let mysql = require('mysql');
-
-// let connection = mysql.createConnection({
-//     host: 'push-db-test.cnzbsftqo00c.us-east-1.rds.amazonaws.com',
-//     user: 'admin',
-//     password: 'pushdbpass',
-//     database: 'push_test'
-// });
-
-// connection.connect(function(err) {
-//     if (err) {
-//       return console.error('error: ' + err.message);
-//     }
-  
-//     console.log('Connected to the MySQL server.');
-//     connection.query('select * from Topics;', (data) => {
-//         console.log('query data', data)
-//     })
-//   });

@@ -7,8 +7,7 @@ const models = require('./models');
 const app = express();
 
 //set static path
-app.use(express.static(path.join(__dirname, "client"), {index: 'index2.html'}));
-// app.use(express.static(path.join(__dirname, "client")));
+app.use(express.static(path.join(__dirname, "client"), {index: 'index.html'}));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -22,7 +21,6 @@ app.post('/subscribe', async (req, res) => {
     try {
         const { subscription, customer, topics } = req.body;
         console.log('subscription.....from client...', subscription)
-        // console.log('subscription.endpoint', subscription.endpoint)
         console.log('checkedBoxes....', topics);
         const subscriptionsResult = await models.subscriptions.findOrCreate({
             where: {
@@ -34,7 +32,6 @@ app.post('/subscribe', async (req, res) => {
                 endpoint: subscription.endpoint
             }
         });
-        console.log('subscriptionsResult', subscriptionsResult[0].dataValues.id)
         topics.forEach(async topic => {
             const topicsResult = await models.topics.findOrCreate({
                 where: {
@@ -49,8 +46,6 @@ app.post('/subscribe', async (req, res) => {
                 }
             });
         });
-
-        // console.log('Subscribed', JSON.stringify(result, null, 2));
         res.status(201).json({
             msg: 'subscription added'
         });
@@ -109,17 +104,13 @@ app.post('/sendTopicNotifications', async (req, res) => {
                 }
             }
         });
-
-        console.log('\n\n\nsubscriptionData........', subscriptionData)
     
         subscriptionData.forEach(subscriberObj => {
-            // console.log('\n\n\nsubscriberObj......', subscriberObj)
             const payload = {
                 title,
                 customer
             };
             const subscription = JSON.parse(subscriberObj.subscription);
-            console.log('subscription..,.,.,', subscription);
     
             webpush.sendNotification(subscription, JSON.stringify(payload)).then(result => {
                 console.log("notificantion sent", result)

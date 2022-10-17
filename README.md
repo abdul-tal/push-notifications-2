@@ -6,7 +6,7 @@ To run the server: **npm run start**
         * Supported by Chrome, Microsoft Edge, Firefox, etc
 
 #### The flow diagram of push notification
-![webPushDesign](Image/webPushDesign.png)
+<img width="1046" alt="Screenshot 2022-09-13 at 3 35 36 PM" src="https://user-images.githubusercontent.com/75615847/196249551-f84dad46-ce1d-4fbf-842a-b0502a39394d.png">
 
 ####  Steps involved:
     •	Create Vapid keys. It has public key and private key
